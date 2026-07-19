@@ -1,0 +1,8 @@
+name: hermes-comfyui-local
+version: 0.1.0
+description: >
+  Local ComfyUI text-to-image backend for Hermes. Registers a single image-gen
+  provider so the native image_generate tool renders through a local ComfyUI
+  server (Flux Dev default; SDXL and SD 1.5 workflows bundled).
+author: Justin Wood
+kind: backend

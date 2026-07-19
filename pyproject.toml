@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-comfyui-local"
+version = "0.1.0"
+description = "Local ComfyUI text-to-image backend provider for Hermes Agent"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Justin Wood" }]
+requires-python = ">=3.9"
+dependencies = ["requests>=2.28"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "responses>=0.23"]
+
+[project.urls]
+Homepage = "https://github.com/intarweb/hermes-comfyui-local"
+
+# The Hermes runtime loads this plugin from ~/.hermes/plugins/image_gen/comfyui-local
+# by path (plugin.yaml + __init__.py), not as a pip package; the packaging metadata
+# here exists only for local editable installs during development/testing.
+[tool.setuptools]
+py-modules = ["comfyui_client"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"
