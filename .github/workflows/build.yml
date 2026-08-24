@@ -1,0 +1,29 @@
+# Canonical intarweb build workflow — the ONLY workflow a repo needs to produce
+# ghcr.io/intarweb/<repo>:latest. No logic here: everything (fork sync, PR
+# folding, fingerprint/no-op, build) lives in the shared workflow it calls.
+# This file is identical in every repo by construction — operations' build step
+# re-asserts this exact copy onto a fork's mirror main after every sync.
+#
+#   FORK:       main is synced to the upstream default branch; every open
+#               intarweb→upstream PR is folded into the built image. Rebuilds
+#               when our PRs update or upstream moves (see schedule).
+#   GREENFIELD: every push to the default branch builds :latest.
+# Shared logic: intarweb/operations/.github/workflows/build.yml (public repo —
+# reusable workflows resolve + unlimited Actions minutes).
+
+name: build
+
+on:
+  push:
+  schedule:
+    - cron: '23 */6 * * *'    # "on a clock" — re-checks upstream + open PRs
+  workflow_dispatch:
+
+permissions:
+  contents: write   # shared workflow re-applies this overlay on fork mirror main
+  packages: write   # GHCR push
+
+jobs:
+  publish:
+    uses: intarweb/operations/.github/workflows/build.yml@main
+    secrets: inherit
